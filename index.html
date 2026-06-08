@@ -312,10 +312,10 @@ footer {
 <div id="grade6-video-section">
   <h2 style="text-align:center; color:#ff498b; margin-bottom:25px; font-size:26px;">🎓 六年级精彩视频合集</h2>
   <div class="video-grid">
-    <div class="video-item"><video controls src="https://cropgif.net/videos/1780922861085-78f37250-28ab-41c5-93bf-0e34fcd7c8a2.mp4"></video></div>
-    <div class="video-item"><video controls src="https://cropgif.net/videos/1780925899886-4383f26d-836d-460f-a0b6-f8334222e6be.mp4"></video></div>
-    <div class="video-item"><video controls src="https://cropgif.net/videos/1780925950892-13aad558-9e9f-4811-92eb-ecd6da03e601.mp4"></video></div>
-    <div class="video-item"><video controls src="https://cropgif.net/videos/1780925975381-ed385b2a-9e74-443f-971d-e1b10d691f2b.mp4"></video></div>
+    <div class="video-item"><video controls class="video-player" src="https://cropgif.net/videos/1780922861085-78f37250-28ab-41c5-93bf-0e34fcd7c8a2.mp4"></video></div>
+    <div class="video-item"><video controls class="video-player" src="https://cropgif.net/videos/1780925899886-4383f26d-836d-460f-a0b6-f8334222e6be.mp4"></video></div>
+    <div class="video-item"><video controls class="video-player" src="https://cropgif.net/videos/1780925950892-13aad558-9e9f-4811-92eb-ecd6da03e601.mp4"></video></div>
+    <div class="video-item"><video controls class="video-player" src="https://cropgif.net/videos/1780925975381-ed385b2a-9e74-443f-971d-e1b10d691f2b.mp4"></video></div>
   </div>
   <button class="video-back-btn" id="backHomeBtn">← 返回首页</button>
 </div>
@@ -348,14 +348,43 @@ const openVideoBtn = document.getElementById("openVideoBtn");
 const homeContent = document.getElementById("home-content");
 const videoSection = document.getElementById("grade6-video-section");
 const backHomeBtn = document.getElementById("backHomeBtn");
+const allVideos = document.querySelectorAll(".video-player");
 
+// 打开视频专区
 openVideoBtn.addEventListener("click",()=>{
   homeContent.style.display = "none";
   videoSection.style.display = "block";
 });
+
+// 返回首页：暂停所有视频并重置进度
 backHomeBtn.addEventListener("click",()=>{
   videoSection.style.display = "none";
   homeContent.style.display = "block";
+  allVideos.forEach(v => {
+    v.pause();
+    v.currentTime = 0;
+  });
+});
+
+// 核心：点击播放前，先暂停所有其他视频
+allVideos.forEach(video => {
+  video.addEventListener('click', function () {
+    // 遍历所有视频，除当前点击的以外全部暂停
+    allVideos.forEach(item => {
+      if (item !== this) {
+        item.pause();
+      }
+    });
+  });
+
+  // 监听播放事件，兜底互斥
+  video.addEventListener("play", function () {
+    allVideos.forEach(item => {
+      if (item !== this) {
+        item.pause();
+      }
+    });
+  });
 });
 
 // 年级按钮点击
@@ -365,7 +394,6 @@ document.querySelectorAll(".grade-btn").forEach(btn=>{
     btnArea.style.display="none";
     galleryContainer.style.display="block";
     backBtn.style.display="block";
-    // 进入相册页 隐藏视频专区按钮
     openVideoBtn.style.display = "none";
     galleryGrid.innerHTML="";
     galleryTitle.innerText=gradeNames[g]+" · 美好回忆";
@@ -381,12 +409,11 @@ document.querySelectorAll(".grade-btn").forEach(btn=>{
   });
 });
 
-// 返回年级选择页 重新显示视频专区按钮
+// 返回年级选择页
 backBtn.onclick=()=>{
   btnArea.style.display="grid";
   galleryContainer.style.display="none";
   backBtn.style.display="none";
-  // 恢复显示视频专区
   openVideoBtn.style.display = "block";
   galleryGrid.innerHTML="";
   const v=document.querySelector(".video-area");
