@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>六年级毕业典礼 · 回忆相册</title>
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: "微软雅黑", sans-serif;
+  background: linear-gradient(135deg, #FFEFF6 0%, #FDE2EE 50%, #FFEEF5 100%);
+  background-attachment: fixed;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+#fireworks {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+}
+
+header {
+  background: #ff7eb9;
+  color: white;
+  text-align: center;
+  padding: 30px 10px;
+  position: relative;
+  z-index: 10;
+  border-radius: 0 0 30px 30px;
+}
+h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+.header-sub {
+  margin-top: 8px;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.middle-text {
+  text-align: center;
+  color: #ff498b;
+  font-size: 17px;
+  margin: 30px 0;
+  position: relative;
+  z-index: 10;
+}
+
+.grade-buttons {
+  max-width: 900px;
+  margin: 0 auto 30px;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  position: relative;
+  z-index: 10;
+}
+.grade-btn {
+  background: white;
+  border: none;
+  color: #ff498b;
+  font-size: 20px;
+  padding: 25px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 4px 12px rgba(255,126,185,0.15);
+}
+.grade-btn:hover {
+  background: #ff7eb9;
+  color: white;
+}
+
+.back-btn {
+  display: block;
+  margin: 20px auto;
+  padding: 12px 30px;
+  background: #ff7eb9;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  position: relative;
+  z-index: 10;
+}
+
+.gallery-container {
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 0 20px;
+  position: relative;
+  z-index: 10;
+  display: none;
+}
+.gallery-title {
+  text-align: center;
+  color: #ff498b;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.video-area {
+  width: 100%;
+  height: 220px;
+  background: rgba(255,255,255,0.6);
+  border-radius: 12px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+}
+.gallery-grid img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  cursor: zoom-in;
+}
+
+footer {
+  text-align: center;
+  margin: 50px 0 30px;
+  color: #888;
+  position: relative;
+  z-index: 10;
+}
+
+.music-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background: #ff7eb9;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 999;
+  border: none;
+}
+.music-btn img {
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+}
+
+#imgZoom {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.9);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+#imgZoom.show {
+  display: flex;
+}
+#imgZoom img {
+  max-width: 95%;
+  max-height: 95%;
+  border-radius: 10px;
+}
+
+/* 底部视频专区按钮 */
+.video-show-btn {
+  display: block;
+  margin: 20px auto 40px;
+  padding: 18px 40px;
+  background: linear-gradient(90deg, #ff7eb9, #ff69b4);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 19px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(255,105,180,0.3);
+  transition: 0.3s;
+  position: relative;
+  z-index: 10;
+}
+.video-show-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(255,105,180,0.4);
+}
+
+/* 视频展示区域 */
+#grade6-video-section {
+  display: none;
+  padding: 20px;
+  position: relative;
+  z-index: 10;
+}
+.video-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.video-item {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+.video-item video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.video-back-btn {
+  display: block;
+  margin: 30px auto 0;
+  padding: 14px 35px;
+  background: #ff7eb9;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .grade-buttons {
+    grid-template-columns: 1fr;
+  }
+  .video-area {
+    height: 180px;
+  }
+  .video-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+<canvas id="fireworks"></canvas>
+
+<button id="musicBtn" class="music-btn">
+  <img id="musicIcon" alt="音乐">
+</button>
+
+<audio id="bgMusic" loop>
+  <source src="https://mp3tourl.com/audio/1780922648114-ed248cda-1cf6-4000-9964-f7c863092ca7.mp3" type="audio/mp3">
+</audio>
+
+<!-- 首页内容 -->
+<div id="home-content">
+<header>
+  <h1>六年级毕业典礼 · 回忆相册</h1>
+  <p class="header-sub">六载春夏秋冬 · 岁岁温柔相伴</p>
+</header>
+
+<div class="middle-text">
+  每一张照片，都是童年限定时光<br>
+  珍藏六年点滴，不负年少相遇
+</div>
+
+<div class="grade-buttons">
+  <button class="grade-btn" data-grade="1">一年级</button>
+  <button class="grade-btn" data-grade="2">二年级</button>
+  <button class="grade-btn" data-grade="3">三年级</button>
+  <button class="grade-btn" data-grade="4">四年级</button>
+  <button class="grade-btn" data-grade="5">五年级</button>
+  <button class="grade-btn" data-grade="6">六年级</button>
+</div>
+
+<button class="back-btn" style="display:none;">← 返回选择年级</button>
+
+<div class="gallery-container">
+  <div class="gallery-title"></div>
+  <div class="gallery-grid"></div>
+</div>
+
+<button class="video-show-btn" id="openVideoBtn">视频专区</button>
+
+<footer>
+  童年很短，未来很长<br>
+  愿少年乘风破浪，毕业快乐✨
+</footer>
+</div>
+
+<!-- 视频专区页面 -->
+<div id="grade6-video-section">
+  <h2 style="text-align:center; color:#ff498b; margin-bottom:25px; font-size:26px;">🎓 六年级精彩视频合集</h2>
+  <div class="video-grid">
+    <div class="video-item"><video controls src="https://cropgif.net/videos/1780922861085-78f37250-28ab-41c5-93bf-0e34fcd7c8a2.mp4"></video></div>
+    <div class="video-item"><video controls src="https://cropgif.net/videos/1780925899886-4383f26d-836d-460f-a0b6-f8334222e6be.mp4"></video></div>
+    <div class="video-item"><video controls src="https://cropgif.net/videos/1780925950892-13aad558-9e9f-4811-92eb-ecd6da03e601.mp4"></video></div>
+    <div class="video-item"><video controls src="https://cropgif.net/videos/1780925975381-ed385b2a-9e74-443f-971d-e1b10d691f2b.mp4"></video></div>
+  </div>
+  <button class="video-back-btn" id="backHomeBtn">← 返回首页</button>
+</div>
+
+<div id="imgZoom">
+  <img id="zoomImg">
+</div>
+
+<script>
+const gradePhotos = {
+  1:["image/1.jpg","image/2.jpg","image/3.jpg","image/4.jpg","image/5.jpg","image/6.jpg","image/7.jpg"],
+  2:["image/8.jpg","image/9.jpg","image/10.jpg","image/11.jpg"],
+  3:["image/12.jpg","image/13.jpg","image/14.jpg","image/15.jpg","image/16.jpg"],
+  4:["image/17.jpg","image/18.jpg","image/19.jpg","image/20.jpg","image/21.jpg","image/22.jpg","image/23.jpg","image/24.jpg"],
+  5:["image/25.jpg","image/26.jpg","image/27.jpg"],
+  6:["image/28.jpg","image/29.jpg","image/30.jpg","image/31.jpg","image/32.jpg","image/33.jpg","image/34.jpg","image/35.jpg","image/36.jpg"]
+};
+const gradeNames={1:"一年级",2:"二年级",3:"三年级",4:"四年级",5:"五年级",6:"六年级"};
+
+const btnArea = document.querySelector(".grade-buttons");
+const backBtn = document.querySelector(".back-btn");
+const galleryContainer = document.querySelector(".gallery-container");
+const galleryTitle = document.querySelector(".gallery-title");
+const galleryGrid = document.querySelector(".gallery-grid");
+const imgZoom = document.getElementById("imgZoom");
+const zoomImg = document.getElementById("zoomImg");
+const openVideoBtn = document.getElementById("openVideoBtn");
+
+// 视频页面切换
+const homeContent = document.getElementById("home-content");
+const videoSection = document.getElementById("grade6-video-section");
+const backHomeBtn = document.getElementById("backHomeBtn");
+
+openVideoBtn.addEventListener("click",()=>{
+  homeContent.style.display = "none";
+  videoSection.style.display = "block";
+});
+backHomeBtn.addEventListener("click",()=>{
+  videoSection.style.display = "none";
+  homeContent.style.display = "block";
+});
+
+// 年级按钮点击
+document.querySelectorAll(".grade-btn").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const g=btn.dataset.grade;
+    btnArea.style.display="none";
+    galleryContainer.style.display="block";
+    backBtn.style.display="block";
+    // 进入相册页 隐藏视频专区按钮
+    openVideoBtn.style.display = "none";
+    galleryGrid.innerHTML="";
+    galleryTitle.innerText=gradeNames[g]+" · 美好回忆";
+
+    const photos=gradePhotos[g];
+    photos.forEach(src=>{
+      const img=document.createElement("img");
+      img.src=src;
+      img.loading="lazy";
+      img.onclick=()=>{zoomImg.src=src;imgZoom.classList.add("show");};
+      galleryGrid.appendChild(img);
+    });
+  });
+});
+
+// 返回年级选择页 重新显示视频专区按钮
+backBtn.onclick=()=>{
+  btnArea.style.display="grid";
+  galleryContainer.style.display="none";
+  backBtn.style.display="none";
+  // 恢复显示视频专区
+  openVideoBtn.style.display = "block";
+  galleryGrid.innerHTML="";
+  const v=document.querySelector(".video-area");
+  if(v)v.remove();
+};
+
+imgZoom.onclick=()=>{imgZoom.classList.remove("show");zoomImg.src="";};
+
+const musicBtn=document.getElementById("musicBtn");
+const musicIcon=document.getElementById("musicIcon");
+const bgMusic=document.getElementById("bgMusic");
+let isPlay=false;
+
+const iconMute = "https://cdn.phototourl.com/free/2026-06-08-c9f04b74-f6bb-471d-bff8-fbdd7f9bfe63.png";
+const iconPlay = "https://cdn.phototourl.com/free/2026-06-08-27702f78-9c3b-4947-822b-b0ad0e027d05.png";
+
+musicIcon.src = iconMute;
+musicBtn.onclick=()=>{
+  if(!isPlay){
+    bgMusic.play();
+    musicIcon.src = iconPlay;
+    isPlay = true;
+  }else{
+    bgMusic.pause();
+    musicIcon.src = iconMute;
+    isPlay = false;
+  }
+};
+
+const canvas=document.getElementById('fireworks');
+const ctx=canvas.getContext('2d');
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+class Firework{
+  constructor(){
+    this.x=Math.random()*canvas.width;
+    this.y=canvas.height;
+    this.speed=6+Math.random()*3;
+    this.angle=-Math.PI/2+(Math.random()-0.5)*0.5;
+    this.vx=Math.cos(this.angle)*this.speed;
+    this.vy=Math.sin(this.angle)*this.speed;
+    this.alpha=1;
+    this.color=`hsl(${Math.random()*360},100%,50%)`;
+  }
+  update(){
+    this.x+=this.vx;
+    this.y+=this.vy;
+    this.alpha-=0.012;
+  }
+  draw(){
+    ctx.save();
+    ctx.globalAlpha=this.alpha;
+    ctx.beginPath();
+    ctx.arc(this.x,this.y,3,0,Math.PI*2);
+    ctx.fillStyle=this.color;
+    ctx.fill();
+    ctx.restore();
+  }
+}
+let fireworks=[];
+function create(){fireworks.push(new Firework());setTimeout(create,350);}
+create();
+function animate(){
+  ctx.fillStyle='rgba(254,246,251,0.1)';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  fireworks.forEach((f,i)=>{
+    f.update();
+    f.draw();
+    if(f.alpha<=0)fireworks.splice(i,1);
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+window.addEventListener('resize',()=>{
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+});
+</script>
+</body>
+</html>
