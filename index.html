@@ -10,6 +10,74 @@
   margin: 0;
   padding: 0;
 }
+
+/* 对联外层容器 */
+.page-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center; /* 整体垂直居中 */
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+}
+/* 左侧上联、右侧下联 竖排样式 放大字体 */
+.couplet-left,
+.couplet-right {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: 24px; /* 放大字体 */
+  font-weight: bold;
+  color: #c71585;
+  letter-spacing: 8px;
+  line-height: 2.8;
+  z-index: 10;
+}
+/* 中间主体内容 */
+.main-content {
+  flex: 1;
+  max-width: 1000px;
+}
+
+/* 倒计时盒子样式 */
+.countdown-container {
+  width: 90%;
+  max-width: 800px;
+  margin: 12px auto;
+  padding: 12px 20px;
+  border: 2px solid #ff7eb9;
+  border-radius: 16px;
+  text-align: center;
+  background: #fff8fb;
+  position: relative;
+  z-index: 999;
+}
+/* 彩色发光动画（文字清晰版） */
+.countdown-text {
+  font-size: 26px;
+  font-weight: bold;
+  color: #d62872;
+  line-height: 1.8;
+  animation: colorShine 2s linear infinite;
+}
+.countdown-text span {
+  color: #ff0055;
+  font-size: 32px;
+  margin: 0 4px;
+  font-weight: bold;
+  animation: colorShine 2s linear infinite;
+}
+
+/* 🌈 彩色清晰闪光动画 */
+@keyframes colorShine {
+  0%  { text-shadow: 0 0 8px #ff0055, 0 0 16px #ff0055; }
+  20% { text-shadow: 0 0 8px #ff9d00, 0 0 16px #ff9d00; }
+  40% { text-shadow: 0 0 8px #f6ff00, 0 0 16px #f6ff00; }
+  60% { text-shadow: 0 0 8px #00ff38, 0 0 16px #00ff38; }
+  80% { text-shadow: 0 0 8px #00a2ff, 0 0 16px #00a2ff; }
+  100%{ text-shadow: 0 0 8px #ff00dd, 0 0 16px #ff00dd; }
+}
+
+/* 原有样式不变 */
 body {
   font-family: "微软雅黑", sans-serif;
   background: linear-gradient(135deg, #FFEFF6 0%, #FDE2EE 50%, #FFEEF5 100%);
@@ -51,7 +119,7 @@ h1 {
   text-align: center;
   color: #ff498b;
   font-size: 17px;
-  margin: 30px 0;
+  margin: 30px 0 10px;
   position: relative;
   z-index: 10;
 }
@@ -247,6 +315,22 @@ footer {
   cursor: pointer;
 }
 
+/* 手机端适配：对联改为横向居中 */
+@media (max-width: 768px) {
+  .page-wrap {
+    flex-direction: column;
+  }
+  .couplet-left,
+  .couplet-right {
+    writing-mode: horizontal-tb;
+    text-align: center;
+    font-size: 20px; /* 手机端同步放大 */
+    letter-spacing: 4px;
+    padding: 10px 0;
+    line-height: 1.8;
+  }
+}
+
 @media (max-width: 600px) {
   .grade-buttons {
     grid-template-columns: 1fr;
@@ -262,6 +346,7 @@ footer {
 </head>
 
 <body>
+
 <canvas id="fireworks"></canvas>
 
 <button id="musicBtn" class="music-btn">
@@ -269,55 +354,72 @@ footer {
 </button>
 
 <audio id="bgMusic" loop>
-  <source src="https://mp3tourl.com/audio/1780922648114-ed248cda-1cf6-4000-9964-f7c863092ca7.mp3" type="audio/mp3">
+  <source src="https://mp3tourl.com/audio/1781012711113-44b2f773-6154-43d5-a84c-bb720543d01c.mp3" type="audio/mp3">
 </audio>
 
-<!-- 首页内容 -->
-<div id="home-content">
-<header>
-  <h1>六年级毕业典礼 · 回忆相册</h1>
-  <p class="header-sub">六载春夏秋冬 · 岁岁温柔相伴</p>
-</header>
+<!-- 整体外层容器：左右对联 + 中间主体 -->
+<div class="page-wrap">
+  <!-- 左侧上联 无标点 -->
+  <div class="couplet-left">忆往昔   灯下勤学   不负青春年少</div>
 
-<div class="middle-text">
-  每一张照片，都是童年限定时光<br>
-  珍藏六年点滴，不负年少相遇
-</div>
+  <!-- 中间所有主体内容 -->
+  <div class="main-content">
+    <!-- 首页内容 -->
+    <div id="home-content">
+      <header>
+        <h1>六年级毕业典礼 · 回忆相册</h1>
+        <p class="header-sub">六载春夏秋冬 · 岁岁温柔相伴</p>
+      </header>
 
-<div class="grade-buttons">
-  <button class="grade-btn" data-grade="1">一年级</button>
-  <button class="grade-btn" data-grade="2">二年级</button>
-  <button class="grade-btn" data-grade="3">三年级</button>
-  <button class="grade-btn" data-grade="4">四年级</button>
-  <button class="grade-btn" data-grade="5">五年级</button>
-  <button class="grade-btn" data-grade="6">六年级</button>
-</div>
+      <!-- 带边框盒子的倒计时 -->
+      <div class="countdown-container">
+        <div class="countdown-text" id="countdown"></div>
+      </div>
 
-<button class="back-btn" style="display:none;">← 返回选择年级</button>
+      <div class="middle-text">
+        每一张照片，都是童年限定时光<br>
+        珍藏六年点滴，不负年少相遇
+      </div>
 
-<div class="gallery-container">
-  <div class="gallery-title"></div>
-  <div class="gallery-grid"></div>
-</div>
+      <div class="grade-buttons">
+        <button class="grade-btn" data-grade="1">一年级</button>
+        <button class="grade-btn" data-grade="2">二年级</button>
+        <button class="grade-btn" data-grade="3">三年级</button>
+        <button class="grade-btn" data-grade="4">四年级</button>
+        <button class="grade-btn" data-grade="5">五年级</button>
+        <button class="grade-btn" data-grade="6">六年级</button>
+      </div>
 
-<button class="video-show-btn" id="openVideoBtn">视频专区</button>
+      <button class="back-btn" style="display:none;">← 返回选择年级</button>
 
-<footer>
-  童年很短，未来很长<br>
-  愿少年乘风破浪，毕业快乐✨
-</footer>
-</div>
+      <div class="gallery-container">
+        <div class="gallery-title"></div>
+        <div class="gallery-grid"></div>
+      </div>
 
-<!-- 视频专区页面 -->
-<div id="grade6-video-section">
-  <h2 style="text-align:center; color:#ff498b; margin-bottom:25px; font-size:26px;">🎓 六年级精彩视频合集</h2>
-  <div class="video-grid">
-    <div class="video-item"><video controls class="video-player" src="https://cropgif.net/videos/1780922861085-78f37250-28ab-41c5-93bf-0e34fcd7c8a2.mp4"></video></div>
-    <div class="video-item"><video controls class="video-player" src="https://cropgif.net/videos/1780925899886-4383f26d-836d-460f-a0b6-f8334222e6be.mp4"></video></div>
-    <div class="video-item"><video controls class="video-player" src="https://cropgif.net/videos/1780925950892-13aad558-9e9f-4811-92eb-ecd6da03e601.mp4"></video></div>
-    <div class="video-item"><video controls class="video-player" src="https://cropgif.net/videos/1780925975381-ed385b2a-9e74-443f-971d-e1b10d691f2b.mp4"></video></div>
+      <button class="video-show-btn" id="openVideoBtn">视频专区</button>
+
+      <footer>
+        童年很短，未来很长<br>
+        愿少年乘风破浪，毕业快乐✨
+      </footer>
+    </div>
+
+    <!-- 视频专区页面 -->
+    <div id="grade6-video-section">
+      <h2 style="text-align:center; color:#ff498b; margin-bottom:25px; font-size:26px;">🎓 六年级精彩视频合集</h2>
+      <div class="video-grid">
+        <div class="video-item"><video controls class="video-player" src="https://cropgif.net/videos/1780922861085-78f37250-28ab-41c5-93bf-0e34fcd7c8a2.mp4"></video></div>
+        <div class="video-item"><video controls class="video-player" src="https://cropgif.net/videos/1780925899886-4383f26d-836d-460f-a0b6-f8334222e6be.mp4"></video></div>
+        <div class="video-item"><video controls class="video-player" src="https://cropgif.net/videos/1780925950892-13aad558-9e9f-4811-92eb-ecd6da03e601.mp4"></video></div>
+        <div class="video-item"><video controls class="video-player" src="https://cropgif.net/videos/1780925975381-ed385b2a-9e74-443f-971d-e1b10d691f2b.mp4"></video></div>
+      </div>
+      <button class="video-back-btn" id="backHomeBtn">← 返回首页</button>
+    </div>
   </div>
-  <button class="video-back-btn" id="backHomeBtn">← 返回首页</button>
+
+  <!-- 右侧下联 无标点 -->
+  <div class="couplet-right">看今朝   云端振翅   勇追远大前程</div>
 </div>
 
 <div id="imgZoom">
@@ -325,6 +427,49 @@ footer {
 </div>
 
 <script>
+// 计算 年 + 剩余天数
+function getYearAndDay(startDate, endDate) {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  let diffTime = end - start;
+  if(diffTime < 0) diffTime = 0;
+
+  const oneDay = 24 * 60 * 60 * 1000;
+  let totalDays = Math.floor(diffTime / oneDay);
+
+  let year = 0;
+  let temp = new Date(start);
+  while (true) {
+    const nextYear = new Date(temp);
+    nextYear.setFullYear(temp.getFullYear() + 1);
+    if (nextYear > end) break;
+    year++;
+    temp = nextYear;
+  }
+  const remainDays = Math.floor((end - temp) / oneDay);
+  return {year, day: remainDays};
+}
+
+function updateCountdown() {
+  // 基准：2026年6月 小学毕业
+  const graduate = "2026-06-01";
+  // 中考、高考时间
+  const zhongkao = "2029-06-15";
+  const gaokao = "2032-06-07";
+
+  const zk = getYearAndDay(graduate, zhongkao);
+  const gk = getYearAndDay(graduate, gaokao);
+
+  document.getElementById('countdown').innerHTML =
+  `距离中考：<span>${zk.year}</span> 年 <span>${zk.day}</span> 天 &nbsp;&nbsp;
+   距离高考：<span>${gk.year}</span> 年 <span>${gk.day}</span> 天`;
+}
+
+// 初始化 + 每秒动态刷新
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+// ========== 原有JS代码完全不变 ==========
 const gradePhotos = {
   1:["image/1.jpg","image/2.jpg","image/3.jpg","image/4.jpg","image/5.jpg","image/6.jpg","image/7.jpg"],
   2:["image/8.jpg","image/9.jpg","image/10.jpg","image/11.jpg"],
@@ -369,7 +514,6 @@ backHomeBtn.addEventListener("click",()=>{
 // 核心：点击播放前，先暂停所有其他视频
 allVideos.forEach(video => {
   video.addEventListener('click', function () {
-    // 遍历所有视频，除当前点击的以外全部暂停
     allVideos.forEach(item => {
       if (item !== this) {
         item.pause();
@@ -377,7 +521,6 @@ allVideos.forEach(video => {
     });
   });
 
-  // 监听播放事件，兜底互斥
   video.addEventListener("play", function () {
     allVideos.forEach(item => {
       if (item !== this) {
@@ -414,7 +557,7 @@ backBtn.onclick=()=>{
   btnArea.style.display="grid";
   galleryContainer.style.display="none";
   backBtn.style.display="none";
-  openVideoBtn.style.display = "block";
+  openVideoBtn.style.display="block";
   galleryGrid.innerHTML="";
   const v=document.querySelector(".video-area");
   if(v)v.remove();
