@@ -97,6 +97,7 @@ body {
   pointer-events: none;
 }
 
+/* 顶部标题栏 完整边框 */
 header {
   background: #a0101c; /* 深红标题栏 */
   color: #fff;
@@ -104,8 +105,10 @@ header {
   padding: 30px 10px;
   position: relative;
   z-index: 10;
-  border-radius: 0 0 30px 30px;
+  border-radius: 16px 16px 0 0; /* 顶部左右圆角 */
+  border: 2px solid #ff4444;
   border-bottom: 3px solid #ffd700;
+  margin: 10px;
 }
 h1 {
   font-size: 28px;
@@ -334,6 +337,9 @@ footer {
     padding: 10px 0;
     line-height: 1.8;
   }
+  header {
+    margin: 5px;
+  }
 }
 
 @media (max-width: 600px) {
@@ -358,14 +364,15 @@ footer {
   <img id="musicIcon" alt="音乐">
 </button>
 
+<!-- ✅ 已完全闭合 audio 标签 -->
 <audio id="bgMusic" loop>
   <source src="https://mp3tourl.com/audio/1781012711113-44b2f773-6154-43d5-a84c-bb720543d01c.mp3" type="audio/mp3">
-</audio> <!-- ✅ 这里已修复闭合 -->
+</audio>
 
 <!-- 整体外层容器：左右对联 + 中间主体 -->
 <div class="page-wrap">
   <!-- 左侧上联 无标点 -->
-  <div class="couplet-left">忆往昔   灯下勤学   不负青春年少</div>
+  <div class="couplet-left">忆往昔灯下勤学不负青春年少</div>
 
   <!-- 中间所有主体内容 -->
   <div class="main-content">
@@ -424,7 +431,7 @@ footer {
   </div>
 
   <!-- 右侧下联 无标点 -->
-  <div class="couplet-right">看今朝   云端振翅   勇追远大前程</div>
+  <div class="couplet-right">看今朝云端振翅勇追远大前程</div>
 </div>
 
 <div id="imgZoom">
@@ -432,49 +439,48 @@ footer {
 </div>
 
 <script>
-// 计算 年 + 剩余天数
-function getYearAndDay(startDate, endDate) {
-  const start = new Date(startDate);
-  const end = new Date(endDate);
-  let diffTime = end - start;
-  if(diffTime < 0) diffTime = 0;
+// 目标时间：中考 2029-06-13  高考 2032-06-07
+const examZk = new Date('2029-06-13 00:00:00');
+const examGk = new Date('2032-06-07 00:00:00');
 
-  const oneDay = 24 * 60 * 60 * 1000;
-  let totalDays = Math.floor(diffTime / oneDay);
+// 计算相差 年、月、日
+function getDiffDate(target) {
+  const now = new Date();
+  let diffMs = target - now;
+  if (diffMs <= 0) return { year: 0, month: 0, day: 0 };
 
-  let year = 0;
-  let temp = new Date(start);
-  while (true) {
-    const nextYear = new Date(temp);
-    nextYear.setFullYear(temp.getFullYear() + 1);
-    if (nextYear > end) break;
-    year++;
-    temp = nextYear;
+  let y = target.getFullYear() - now.getFullYear();
+  let m = target.getMonth() - now.getMonth();
+  let d = target.getDate() - now.getDate();
+
+  // 日期借位修正
+  if (d < 0) {
+    m -= 1;
+    const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+    d += lastDay;
   }
-  const remainDays = Math.floor((end - temp) / oneDay);
-  return {year, day: remainDays};
+  if (m < 0) {
+    y -= 1;
+    m += 12;
+  }
+  return { year: y, month: m, day: d };
 }
 
+// 刷新倒计时
 function updateCountdown() {
-  // 基准：2026年6月 小学毕业
-  const graduate = "2026-06-01";
-  // 中考、高考时间
-  const zhongkao = "2029-06-15";
-  const gaokao = "2032-06-07";
-
-  const zk = getYearAndDay(graduate, zhongkao);
-  const gk = getYearAndDay(graduate, gaokao);
+  const zk = getDiffDate(examZk);
+  const gk = getDiffDate(examGk);
 
   document.getElementById('countdown').innerHTML =
-  `距离中考：<span>${zk.year}</span> 年 <span>${zk.day}</span> 天 &nbsp;&nbsp;
-   距离高考：<span>${gk.year}</span> 年 <span>${gk.day}</span> 天`;
+    `距离中考：<span>${zk.year}</span> 年 <span>${zk.month}</span> 月 <span>${zk.day}</span> 天 &nbsp;&nbsp;
+     距离高考：<span>${gk.year}</span> 年 <span>${gk.month}</span> 月 <span>${gk.day}</span> 天`;
 }
 
-// 初始化 + 每秒动态刷新
+// 初始化 + 每分钟刷新（跨天自动变化）
 updateCountdown();
-setInterval(updateCountdown, 1000);
+setInterval(updateCountdown, 60000);
 
-// ========== 原有JS代码完全不变 ==========
+// ========== 原有功能代码完全保留 ==========
 const gradePhotos = {
   1:["image/1.jpg","image/2.jpg","image/3.jpg","image/4.jpg","image/5.jpg","image/6.jpg","image/7.jpg"],
   2:["image/8.jpg","image/9.jpg","image/10.jpg","image/11.jpg"],
@@ -516,26 +522,21 @@ backHomeBtn.addEventListener("click",()=>{
   });
 });
 
-// 核心：点击播放前，先暂停所有其他视频
+// 视频互斥播放
 allVideos.forEach(video => {
   video.addEventListener('click', function () {
     allVideos.forEach(item => {
-      if (item !== this) {
-        item.pause();
-      }
+      if (item !== this) item.pause();
     });
   });
-
   video.addEventListener("play", function () {
     allVideos.forEach(item => {
-      if (item !== this) {
-        item.pause();
-      }
+      if (item !== this) item.pause();
     });
   });
 });
 
-// 年级按钮点击
+// 年级相册切换
 document.querySelectorAll(".grade-btn").forEach(btn=>{
   btn.addEventListener("click",()=>{
     const g=btn.dataset.grade;
@@ -557,7 +558,6 @@ document.querySelectorAll(".grade-btn").forEach(btn=>{
   });
 });
 
-// 返回年级选择页
 backBtn.onclick=()=>{
   btnArea.style.display="grid";
   galleryContainer.style.display="none";
@@ -570,6 +570,7 @@ backBtn.onclick=()=>{
 
 imgZoom.onclick=()=>{imgZoom.classList.remove("show");zoomImg.src="";};
 
+// 背景音乐
 const musicBtn=document.getElementById("musicBtn");
 const musicIcon=document.getElementById("musicIcon");
 const bgMusic=document.getElementById("bgMusic");
@@ -591,6 +592,7 @@ musicBtn.onclick=()=>{
   }
 };
 
+// 烟花动画
 const canvas=document.getElementById('fireworks');
 const ctx=canvas.getContext('2d');
 canvas.width=window.innerWidth;
