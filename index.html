@@ -9,50 +9,128 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: "STKaiti", "楷体", "微软雅黑", sans-serif;
+}
+
+/* 页面入场动画 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 彩色发光动画 */
+@keyframes colorShine {
+  0%  { text-shadow: 0 0 10px #ff0055, 0 0 20px #ff0055; }
+  20% { text-shadow: 0 0 10px #ff9d00, 0 0 20px #ff9d00; }
+  40% { text-shadow: 0 0 10px #f6ff00, 0 0 20px #f6ff00; }
+  60% { text-shadow: 0 0 10px #00ff38, 0 0 20px #00ff38; }
+  80% { text-shadow: 0 0 10px #00a2ff, 0 0 20px #00a2ff; }
+  100%{ text-shadow: 0 0 10px #ff00dd, 0 0 20px #ff00dd; }
+}
+
+/* 全局背景 渐变国风红 */
+body {
+  background: linear-gradient(135deg, #9b0e1a 0%, #c81623 50%, #a0101c 100%);
+  background-attachment: fixed;
+  overflow-x: hidden;
+  min-height: 100vh;
 }
 
 /* 对联外层容器 */
 .page-wrap {
   display: flex;
   justify-content: center;
-  align-items: center; /* 整体垂直居中 */
+  align-items: center;
   width: 100%;
   min-height: 100vh;
   position: relative;
 }
-/* 左侧上联、右侧下联 竖排样式 放大字体 */
+
+/* 竖排对联样式 */
 .couplet-left,
 .couplet-right {
   writing-mode: vertical-rl;
   text-orientation: mixed;
-  font-size: 24px; /* 放大字体 */
+  font-size: 26px;
   font-weight: bold;
-  color: #fff; /* 白色字体适配红背景 */
-  letter-spacing: 8px;
-  line-height: 2.8;
+  color: #fff;
+  letter-spacing: 10px;
+  line-height: 3;
   z-index: 10;
-  text-shadow: 2px 2px 4px #000;
+  padding: 20px 10px;
+  text-shadow: 1px 1px 2px #000, 0 0 8px rgba(255,215,0,0.6);
 }
-/* 中间主体内容 */
+
+/* 中间主体 + 入场动画 */
 .main-content {
   flex: 1;
   max-width: 1000px;
+  animation: fadeInUp 0.8s ease-out;
 }
 
-/* 倒计时盒子样式 */
+/* 顶部标题栏 */
+header {
+  background: linear-gradient(145deg, #8a0d18, #a0101c);
+  color: #fff;
+  text-align: center;
+  padding: 30px 10px;
+  position: relative;
+  z-index: 10;
+  border-radius: 16px 16px 0 0;
+  border: 2px solid #ffd700;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+  margin: 10px;
+  position: sticky;
+  top: 0;
+}
+h1 {
+  font-size: 32px;
+  margin-bottom: 8px;
+  letter-spacing: 4px;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+.header-sub {
+  margin-top: 8px;
+  opacity: 0.9;
+  font-size: 16px;
+  letter-spacing: 2px;
+}
+
+/* 中间文案 */
+.middle-text {
+  text-align: center;
+  color: #fff;
+  font-size: 18px;
+  margin: 30px 0 10px;
+  position: relative;
+  z-index: 10;
+  text-shadow: 1px 1px 3px #000;
+  line-height: 2;
+  letter-spacing: 1px;
+}
+
+/* 倒计时容器 毛玻璃效果 */
 .countdown-container {
   width: 90%;
   max-width: 800px;
   margin: 12px auto;
-  padding: 12px 20px;
-  border: 2px solid #ffd700; /* 金色边框点缀 */
+  padding: 16px 24px;
+  border: 2px solid #ffd700;
   border-radius: 16px;
   text-align: center;
-  background: #fff8fb;
+  background: rgba(255, 248, 251, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2), 0 0 12px rgba(255, 215, 0, 0.4);
   position: relative;
   z-index: 999;
 }
-/* 彩色发光动画（文字清晰版） */
 .countdown-text {
   font-size: 26px;
   font-weight: bold;
@@ -68,67 +146,7 @@
   animation: colorShine 2s linear infinite;
 }
 
-/* 🌈 彩色清晰闪光动画 */
-@keyframes colorShine {
-  0%  { text-shadow: 0 0 8px #ff0055, 0 0 16px #ff0055; }
-  20% { text-shadow: 0 0 8px #ff9d00, 0 0 16px #ff9d00; }
-  40% { text-shadow: 0 0 8px #f6ff00, 0 0 16px #f6ff00; }
-  60% { text-shadow: 0 0 8px #00ff38, 0 0 16px #00ff38; }
-  80% { text-shadow: 0 0 8px #00a2ff, 0 0 16px #00a2ff; }
-  100%{ text-shadow: 0 0 8px #ff00dd, 0 0 16px #ff00dd; }
-}
-
-/* 全局改为喜庆红色背景 */
-body {
-  font-family: "微软雅黑", sans-serif;
-  background: #c81623; /* 正红主背景 */
-  background-attachment: fixed;
-  overflow-x: hidden;
-  min-height: 100vh;
-}
-
-#fireworks {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 0;
-  pointer-events: none;
-}
-
-/* 顶部标题栏 完整边框 */
-header {
-  background: #a0101c; /* 深红标题栏 */
-  color: #fff;
-  text-align: center;
-  padding: 30px 10px;
-  position: relative;
-  z-index: 10;
-  border-radius: 16px 16px 0 0; /* 顶部左右圆角 */
-  border: 2px solid #ff4444;
-  border-bottom: 3px solid #ffd700;
-  margin: 10px;
-}
-h1 {
-  font-size: 28px;
-  margin-bottom: 8px;
-}
-.header-sub {
-  margin-top: 8px;
-  the opacity: 0.9;
-}
-
-.middle-text {
-  text-align: center;
-  color: #fff;
-  font-size: 17px;
-  margin: 30px 0 10px;
-  position: relative;
-  z-index: 10;
-  text-shadow: 1px 1px 3px #000;
-}
-
+/* 年级按钮区域 */
 .grade-buttons {
   max-width: 900px;
   margin: 0 auto 30px;
@@ -141,21 +159,27 @@ h1 {
 }
 .grade-btn {
   background: #fff;
-  border: none;
+  border: 1px solid transparent;
   color: #c81623;
   font-size: 20px;
   padding: 25px;
   border-radius: 12px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 .grade-btn:hover {
   background: #ffd700;
-  color: #c81623;
+  color: #9b0e1a;
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
+  border-color: #fff;
+}
+.grade-btn:active {
+  transform: translateY(0) scale(0.98);
 }
 
-/* ✅ 返回按钮：圆角和视频专区按钮一致 */
+/* 返回按钮 */
 .back-btn {
   display: block;
   margin: 20px auto;
@@ -168,8 +192,15 @@ h1 {
   cursor: pointer;
   position: relative;
   z-index: 10;
+  transition: all 0.3s ease;
+}
+.back-btn:hover {
+  background: #ffd700;
+  color: #c81623;
+  box-shadow: 0 0 15px rgba(255,215,0,0.5);
 }
 
+/* 相册容器 */
 .gallery-container {
   max-width: 1000px;
   margin: 20px auto;
@@ -185,19 +216,6 @@ h1 {
   margin-bottom: 20px;
   text-shadow: 1px 1px 3px #000;
 }
-
-.video-area {
-  width: 100%;
-  height: 220px;
-  background: rgba(255,255,255,0.6);
-  border-radius: 12px;
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -210,60 +228,16 @@ h1 {
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.3);
   cursor: zoom-in;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+.gallery-grid img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 18px rgba(255, 215, 0, 0.5);
+  border-color: #ffd700;
 }
 
-footer {
-  text-align: center;
-  margin: 50px 0 30px;
-  color: #fff;
-  position: relative;
-  z-index: 10;
-  text-shadow: 1px 1px 3px #000;
-}
-
-.music-btn {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  width: 50px;
-  height: 50px;
-  background: #ffd700;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 999;
-  border: none;
-}
-.music-btn img {
-  width: 60%;
-  height: 60%;
-  object-fit: contain;
-}
-
-#imgZoom {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.9);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-#imgZoom.show {
-  display: flex;
-}
-#imgZoom img {
-  max-width: 95%;
-  max-height: 95%;
-  border-radius: 10px;
-}
-
-/* 底部视频专区按钮 */
+/* 视频入口按钮 */
 .video-show-btn {
   display: block;
   margin: 20px auto 40px;
@@ -283,9 +257,10 @@ footer {
 .video-show-btn:hover {
   transform: translateY(-3px);
   box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+  filter: brightness(1.1);
 }
 
-/* 视频展示区域 */
+/* 视频专区 */
 #grade6-video-section {
   display: none;
   padding: 20px;
@@ -305,6 +280,12 @@ footer {
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  border: 2px solid rgba(255,215,0,0.3);
+  transition: all 0.3s;
+}
+.video-item:hover {
+  border-color: #ffd700;
+  box-shadow: 0 0 20px rgba(255,215,0,0.4);
 }
 .video-item video {
   width: 100%;
@@ -321,33 +302,132 @@ footer {
   border-radius: 30px;
   font-size: 17px;
   cursor: pointer;
+  transition: all 0.3s ease;
+}
+.video-back-btn:hover {
+  background: #ffd700;
+  color: #c81623;
+  box-shadow: 0 0 15px rgba(255,215,0,0.5);
 }
 
-/* 手机端适配：对联改为横向居中 */
+/* 图片放大弹窗 */
+#imgZoom {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.92);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+#imgZoom.show {
+  display: flex;
+  opacity: 1;
+}
+#imgZoom img {
+  max-width: 95%;
+  max-height: 95%;
+  border-radius: 10px;
+  box-shadow: 0 0 30px rgba(255,255,255,0.2);
+}
+#imgZoom::after {
+  content: "点击任意位置关闭";
+  position: absolute;
+  bottom: 40px;
+  color: #fff;
+  font-size: 16px;
+  opacity: 0.7;
+}
+
+/* 页脚 */
+footer {
+  text-align: center;
+  margin: 50px 0 30px;
+  color: #fff;
+  position: relative;
+  z-index: 10;
+  text-shadow: 1px 1px 3px #000;
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+/* 音乐按钮 */
+.music-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background: #ffd700;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 999;
+  border: none;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  transition: transform 0.3s;
+}
+.music-btn:hover {
+  transform: scale(1.1);
+}
+.music-btn img {
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+}
+
+/* 烟花画布 */
+#fireworks {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* 移动端适配 */
 @media (max-width: 768px) {
   .page-wrap {
     flex-direction: column;
+    padding: 10px 0;
   }
   .couplet-left,
   .couplet-right {
     writing-mode: horizontal-tb;
     text-align: center;
-    font-size: 20px; /* 手机端同步放大 */
+    font-size: 20px;
     letter-spacing: 4px;
     padding: 10px 0;
     line-height: 1.8;
   }
   header {
     margin: 5px;
+    padding: 20px 10px;
+  }
+  h1 {
+    font-size: 24px;
+    letter-spacing: 2px;
+  }
+  .music-btn {
+    width: 44px;
+    height: 44px;
+    top: 15px;
+    right: 15px;
   }
 }
 
 @media (max-width: 600px) {
   .grade-buttons {
     grid-template-columns: 1fr;
-  }
-  .video-area {
-    height: 180px;
   }
   .video-grid {
     grid-template-columns: 1fr;
@@ -357,33 +437,30 @@ footer {
 </head>
 
 <body>
-
 <canvas id="fireworks"></canvas>
 
 <button id="musicBtn" class="music-btn">
   <img id="musicIcon" alt="音乐">
 </button>
 
-<!-- ✅ audio 已彻底闭合 -->
+<!-- 背景音乐 -->
 <audio id="bgMusic" loop>
   <source src="https://mp3tourl.com/audio/1781012711113-44b2f773-6154-43d5-a84c-bb720543d01c.mp3" type="audio/mp3">
 </audio>
 
-<!-- 整体外层容器：左右对联 + 中间主体 -->
 <div class="page-wrap">
-  <!-- 左侧上联 无标点 -->
+  <!-- 左侧上联 -->
   <div class="couplet-left">忆往昔   灯下勤学   不负青春年少</div>
 
-  <!-- 中间所有主体内容 -->
+  <!-- 中间主体内容 -->
   <div class="main-content">
-    <!-- 首页内容 -->
     <div id="home-content">
       <header>
         <h1>六年级毕业典礼 · 回忆相册</h1>
         <p class="header-sub">六载春夏秋冬 · 岁岁温柔相伴</p>
       </header>
 
-      <!-- 带边框盒子的倒计时 -->
+      <!-- 倒计时区域 -->
       <div class="countdown-container">
         <div class="countdown-text" id="countdown"></div>
       </div>
@@ -393,6 +470,7 @@ footer {
         珍藏六年点滴，不负年少相遇
       </div>
 
+      <!-- 年级选择按钮 -->
       <div class="grade-buttons">
         <button class="grade-btn" data-grade="1">一年级</button>
         <button class="grade-btn" data-grade="2">二年级</button>
@@ -404,6 +482,7 @@ footer {
 
       <button class="back-btn" style="display:none;">← 返回选择年级</button>
 
+      <!-- 相册区域 -->
       <div class="gallery-container">
         <div class="gallery-title"></div>
         <div class="gallery-grid"></div>
@@ -417,33 +496,42 @@ footer {
       </footer>
     </div>
 
-    <!-- 视频专区页面 -->
+    <!-- 视频专区 -->
     <div id="grade6-video-section">
       <h2 style="text-align:center; color:#fff; margin-bottom:25px; font-size:26px;text-shadow: 1px 1px 3px #000;">🎓 六年级精彩视频合集</h2>
       <div class="video-grid">
-        <div class="video-item"><video controls class="video-player" src="https://cropgif.net/videos/1780922861085-78f37250-28ab-41c5-93bf-0e34fcd7c8a2.mp4"></video></div>
-        <div class="video-item"><video controls class="video-player" src="https://cropgif.net/videos/1780925899886-4383f26d-836d-460f-a0b6-f8334222e6be.mp4"></video></div>
-        <div class="video-item"><video controls class="video-player" src="https://cropgif.net/videos/1780925950892-13aad558-9e9f-4811-92eb-ecd6da03e601.mp4"></video></div>
-        <div class="video-item"><video controls class="video-player" src="https://cropgif.net/videos/1780925975381-ed385b2a-9e74-443f-971d-e1b10d691f2b.mp4"></video></div>
+        <div class="video-item">
+          <video controls class="video-player" src="https://cropgif.net/videos/1780922861085-78f37250-28ab-41c5-93bf-0e34fcd7c8a2.mp4"></video>
+        </div>
+        <div class="video-item">
+          <video controls class="video-player" src="https://cropgif.net/videos/1780925899886-4383f26d-836d-460f-a0b6-f8334222e6be.mp4"></video>
+        </div>
+        <div class="video-item">
+          <video controls class="video-player" src="https://cropgif.net/videos/1780925950892-13aad558-9e9f-4811-92eb-ecd6da03e601.mp4"></video>
+        </div>
+        <div class="video-item">
+          <video controls class="video-player" src="https://cropgif.net/videos/1780925975381-ed385b2a-9e74-443f-971d-e1b10d691f2b.mp4"></video>
+        </div>
       </div>
       <button class="video-back-btn" id="backHomeBtn">← 返回首页</button>
     </div>
   </div>
 
-  <!-- 右侧下联 无标点 -->
+  <!-- 右侧下联 -->
   <div class="couplet-right">看今朝   云端振翅   勇追远大前程</div>
 </div>
 
+<!-- 图片放大弹窗 -->
 <div id="imgZoom">
   <img id="zoomImg">
 </div>
 
 <script>
-// 目标时间：中考 2029-06-13  高考 2032-06-07
+// 倒计时目标时间
 const examZk = new Date('2029-06-13 00:00:00');
 const examGk = new Date('2032-06-07 00:00:00');
 
-// 计算相差 年、月、日
+// 计算时间差
 function getDiffDate(target) {
   const now = new Date();
   let diffMs = target - now;
@@ -453,7 +541,6 @@ function getDiffDate(target) {
   let m = target.getMonth() - now.getMonth();
   let d = target.getDate() - now.getDate();
 
-  // 日期借位修正
   if (d < 0) {
     m -= 1;
     const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
@@ -466,21 +553,18 @@ function getDiffDate(target) {
   return { year: y, month: m, day: d };
 }
 
-// 刷新倒计时
+// 更新倒计时
 function updateCountdown() {
   const zk = getDiffDate(examZk);
   const gk = getDiffDate(examGk);
-
   document.getElementById('countdown').innerHTML =
     `距离中考：<span>${zk.year}</span> 年 <span>${zk.month}</span> 月 <span>${zk.day}</span> 天 &nbsp;&nbsp;
      距离高考：<span>${gk.year}</span> 年 <span>${gk.month}</span> 月 <span>${gk.day}</span> 天`;
 }
-
-// 初始化 + 每分钟刷新（跨天自动变化）
 updateCountdown();
 setInterval(updateCountdown, 60000);
 
-// ========== 原有功能代码完全保留 ==========
+// 相册图片数据
 const gradePhotos = {
   1:["image/1.jpg","image/2.jpg","image/3.jpg","image/4.jpg","image/5.jpg","image/6.jpg","image/7.jpg"],
   2:["image/8.jpg","image/9.jpg","image/10.jpg","image/11.jpg"],
@@ -489,8 +573,9 @@ const gradePhotos = {
   5:["image/25.jpg","image/26.jpg","image/27.jpg"],
   6:["image/28.jpg","image/29.jpg","image/30.jpg","image/31.jpg","image/32.jpg","image/33.jpg","image/34.jpg","image/35.jpg","image/36.jpg"]
 };
-const gradeNames={1:"一年级",2:"二年级",3:"三年级",4:"四年级",5:"五年级",6:"六年级"};
+const gradeNames = {1:"一年级",2:"二年级",3:"三年级",4:"四年级",5:"五年级",6:"六年级"};
 
+// DOM 元素获取
 const btnArea = document.querySelector(".grade-buttons");
 const backBtn = document.querySelector(".back-btn");
 const galleryContainer = document.querySelector(".gallery-container");
@@ -499,21 +584,19 @@ const galleryGrid = document.querySelector(".gallery-grid");
 const imgZoom = document.getElementById("imgZoom");
 const zoomImg = document.getElementById("zoomImg");
 const openVideoBtn = document.getElementById("openVideoBtn");
-
-// 视频页面切换
 const homeContent = document.getElementById("home-content");
 const videoSection = document.getElementById("grade6-video-section");
 const backHomeBtn = document.getElementById("backHomeBtn");
 const allVideos = document.querySelectorAll(".video-player");
 
 // 打开视频专区
-openVideoBtn.addEventListener("click",()=>{
+openVideoBtn.addEventListener("click", () => {
   homeContent.style.display = "none";
   videoSection.style.display = "block";
 });
 
-// 返回首页：暂停所有视频并重置进度
-backHomeBtn.addEventListener("click",()=>{
+// 返回首页，暂停所有视频
+backHomeBtn.addEventListener("click", () => {
   videoSection.style.display = "none";
   homeContent.style.display = "block";
   allVideos.forEach(v => {
@@ -537,55 +620,63 @@ allVideos.forEach(video => {
 });
 
 // 年级相册切换
-document.querySelectorAll(".grade-btn").forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    const g=btn.dataset.grade;
-    btnArea.style.display="none";
-    galleryContainer.style.display="block";
-    backBtn.style.display="block";
+document.querySelectorAll(".grade-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const g = btn.dataset.grade;
+    btnArea.style.display = "none";
+    galleryContainer.style.display = "block";
+    backBtn.style.display = "block";
     openVideoBtn.style.display = "none";
-    galleryGrid.innerHTML="";
-    galleryTitle.innerText=gradeNames[g]+" · 美好回忆";
+    galleryGrid.innerHTML = "";
+    galleryTitle.innerText = gradeNames[g] + " · 美好回忆";
 
-    const photos=gradePhotos[g];
-    photos.forEach(src=>{
-      const img=document.createElement("img");
-      img.src=src;
-      img.loading="lazy";
-      img.onclick=()=>{zoomImg.src=src;imgZoom.classList.add("show");};
+    const photos = gradePhotos[g];
+    photos.forEach(src => {
+      const img = document.createElement("img");
+      img.src = src;
+      img.loading = "lazy";
+      img.onclick = () => {
+        zoomImg.src = src;
+        imgZoom.classList.add("show");
+      };
       galleryGrid.appendChild(img);
     });
   });
 });
 
-backBtn.onclick=()=>{
-  btnArea.style.display="grid";
-  galleryContainer.style.display="none";
-  backBtn.style.display="none";
-  openVideoBtn.style.display="block";
-  galleryGrid.innerHTML="";
-  const v=document.querySelector(".video-area");
-  if(v)v.remove();
+// 返回年级选择页
+backBtn.onclick = () => {
+  btnArea.style.display = "grid";
+  galleryContainer.style.display = "none";
+  backBtn.style.display = "none";
+  openVideoBtn.style.display = "block";
+  galleryGrid.innerHTML = "";
+  const v = document.querySelector(".video-area");
+  if (v) v.remove();
 };
 
-imgZoom.onclick=()=>{imgZoom.classList.remove("show");zoomImg.src="";};
+// 关闭图片放大
+imgZoom.onclick = () => {
+  imgZoom.classList.remove("show");
+  zoomImg.src = "";
+};
 
-// 背景音乐
-const musicBtn=document.getElementById("musicBtn");
-const musicIcon=document.getElementById("musicIcon");
-const bgMusic=document.getElementById("bgMusic");
-let isPlay=false;
+// 背景音乐控制
+const musicBtn = document.getElementById("musicBtn");
+const musicIcon = document.getElementById("musicIcon");
+const bgMusic = document.getElementById("bgMusic");
+let isPlay = false;
 
 const iconMute = "https://cdn.phototourl.com/free/2026-06-08-c9f04b74-f6bb-471d-bff8-fbdd7f9bfe63.png";
 const iconPlay = "https://cdn.phototourl.com/free/2026-06-08-27702f78-9c3b-4947-822b-b0ad0e027d05.png";
 
 musicIcon.src = iconMute;
-musicBtn.onclick=()=>{
-  if(!isPlay){
+musicBtn.onclick = () => {
+  if (!isPlay) {
     bgMusic.play();
     musicIcon.src = iconPlay;
     isPlay = true;
-  }else{
+  } else {
     bgMusic.pause();
     musicIcon.src = iconMute;
     isPlay = false;
@@ -593,53 +684,61 @@ musicBtn.onclick=()=>{
 };
 
 // 烟花动画
-const canvas=document.getElementById('fireworks');
-const ctx=canvas.getContext('2d');
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
-class Firework{
-  constructor(){
-    this.x=Math.random()*canvas.width;
-    this.y=canvas.height;
-    this.speed=6+Math.random()*3;
-    this.angle=-Math.PI/2+(Math.random()-0.5)*0.5;
-    this.vx=Math.cos(this.angle)*this.speed;
-    this.vy=Math.sin(this.angle)*this.speed;
-    this.alpha=1;
-    this.color=`hsl(${Math.random()*360},100%,50%)`;
+const canvas = document.getElementById('fireworks');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+class Firework {
+  constructor() {
+    this.x = Math.random() * canvas.width;
+    this.y = canvas.height;
+    this.speed = 6 + Math.random() * 3;
+    this.angle = -Math.PI / 2 + (Math.random() - 0.5) * 0.5;
+    this.vx = Math.cos(this.angle) * this.speed;
+    this.vy = Math.sin(this.angle) * this.speed;
+    this.alpha = 1;
+    this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
   }
-  update(){
-    this.x+=this.vx;
-    this.y+=this.vy;
-    this.alpha-=0.012;
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    this.alpha -= 0.012;
   }
-  draw(){
+  draw() {
     ctx.save();
-    ctx.globalAlpha=this.alpha;
+    ctx.globalAlpha = this.alpha;
     ctx.beginPath();
-    ctx.arc(this.x,this.y,3,0,Math.PI*2);
-    ctx.fillStyle=this.color;
+    ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+    ctx.fillStyle = this.color;
     ctx.fill();
     ctx.restore();
   }
 }
-let fireworks=[];
-function create(){fireworks.push(new Firework());setTimeout(create,350);}
+
+let fireworks = [];
+function create() {
+  fireworks.push(new Firework());
+  setTimeout(create, 350);
+}
 create();
-function animate(){
-  ctx.fillStyle='rgba(160, 16, 28, 0.1)';
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-  fireworks.forEach((f,i)=>{
+
+function animate() {
+  ctx.fillStyle = 'rgba(160, 16, 28, 0.08)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  fireworks.forEach((f, i) => {
     f.update();
     f.draw();
-    if(f.alpha<=0)fireworks.splice(i,1);
+    if (f.alpha <= 0) fireworks.splice(i, 1);
   });
   requestAnimationFrame(animate);
 }
 animate();
-window.addEventListener('resize',()=>{
-  canvas.width=window.innerWidth;
-  canvas.height=window.innerHeight;
+
+// 窗口大小适配
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
 });
 </script>
 </body>
